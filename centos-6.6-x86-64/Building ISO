@@ -48,6 +48,13 @@ createrepo -u "media://`head -1 .discinfo`" -g repodata/comps.xml .
 
 write the ks file
 
+[root@localhost respin-centos]# vi ks_uni.cfg 
+[root@localhost respin-centos]# mkdir tar
+[root@localhost respin-centos]# touch tar/test
+[root@localhost respin-centos]# ls tar/
+test
+[root@localhost respin-centos]# vi ks_uni.cfg 
+
 chmod 755 isolinux/isolinux.cfg 
 modify the isolinux.cfg to make it work like this
 
