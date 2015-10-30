@@ -1,0 +1,97 @@
+cd /root
+copy the minimal iso
+
+yum -y install rsync yum-utils createrepo genisoimage isomd5sum yum-downloadonly
+
+mkdir respin-centos
+
+mount -o loop,ro /root/CentOS-6.6-x86_64-minimal.iso /mnt
+rsync -av /mnt/ .
+
+find . -name TRANS.TBL -exec rm -f {} \;
+
+yum install -y python-devel python-pip --downloadonly --downloaddir Packages/
+
+rpm --initdb --dbpath /root/respin-centos/Packages/
+
+rpm -ivh --test --dbpath /root/respin-centos/Packages/ /root/respin-centos/Packages/*.rpm
+
+ls repodata/
+34bae2d3c9c78e04ed2429923bc095005af1b166d1a354422c4c04274bae0f59-c6-minimal-x86_64.xml
+490d05bedc0f8be64c5c26a3c2a804b817eec00fe42223d1fb856566fa248130-primary.xml.gz
+5291f680f7b6afd2444e583202951977779200bc5a295922ef816a90476e493e-filelists.sqlite.bz2
+6e147c9aea5bf4c0f1ba7ecf759ddd3a259003a7f12a5a74398c9f05d672573d-primary.sqlite.bz2
+98678399cf20d3bcc860229b9a3ba5d99a4446e95947030d567113e412fcc412-filelists.xml.gz
+ce2d698b9fb1413b668443e88835a0642cea8f387c7f25cc946f56dd93f109bb-c6-minimal-x86_64.xml.gz
+dc720ad0a977caf5eb6dee0648c29e420a22e2f4277e099c925ee727de0735cd-other.sqlite.bz2
+e0d5ad3bff4d0bd6ffd5037d6e76049b09c1d4f697445be6071d100f865a46f3-other.xml.gz
+repomd.xml
+
+gunzip repodata/ce2d698b9fb1413b668443e88835a0642cea8f387c7f25cc946f56dd93f109bb-c6-minimal-x86_64.xml.gz
+
+
+ls repodata/
+34bae2d3c9c78e04ed2429923bc095005af1b166d1a354422c4c04274bae0f59-c6-minimal-x86_64.xml
+490d05bedc0f8be64c5c26a3c2a804b817eec00fe42223d1fb856566fa248130-primary.xml.gz
+5291f680f7b6afd2444e583202951977779200bc5a295922ef816a90476e493e-filelists.sqlite.bz2
+6e147c9aea5bf4c0f1ba7ecf759ddd3a259003a7f12a5a74398c9f05d672573d-primary.sqlite.bz2
+98678399cf20d3bcc860229b9a3ba5d99a4446e95947030d567113e412fcc412-filelists.xml.gz
+ce2d698b9fb1413b668443e88835a0642cea8f387c7f25cc946f56dd93f109bb-c6-minimal-x86_64.xml
+dc720ad0a977caf5eb6dee0648c29e420a22e2f4277e099c925ee727de0735cd-other.sqlite.bz2
+e0d5ad3bff4d0bd6ffd5037d6e76049b09c1d4f697445be6071d100f865a46f3-other.xml.gz
+repomd.xml
+
+mv repodata/ce2d698b9fb1413b668443e88835a0642cea8f387c7f25cc946f56dd93f109bb-c6-minimal-x86_64.xml repodata/comps.xml
+
+
+createrepo -u "media://`head -1 .discinfo`" -g repodata/comps.xml .
+
+write the ks file
+
+chmod 755 isolinux/isolinux.cfg 
+modify the isolinux.cfg to make it work like this
+
+default linux
+prompt 0
+timeout 600
+display boot.msg
+F1 boot.msg
+F2 options.msg
+F3 general.msg
+F4 param.msg
+F5 rescue.msg
+label linux
+kernel vmlinuz
+append initrd=initrd.img ks=cdrom:/ks.cfg ( Add this entry in this line )
+
+
+
+mkisofs -r -R -J -T -v -no-emul-boot \
+    -boot-load-size 4 \
+    -boot-info-table \
+    -V "respin-centos" \
+    -p "Ramaseshan" \
+    -A "respin-centos-build1" \
+    -b isolinux/isolinux.bin \
+    -c isolinux/boot.cat \
+    -x "lost+found" \
+    --joliet-long \
+    -o /tmp/boot.iso .
+    
+    
+ 89.86% done, estimate finish Fri Oct 30 16:19:23 2015
+ 92.17% done, estimate finish Fri Oct 30 16:19:23 2015
+ 94.47% done, estimate finish Fri Oct 30 16:19:23 2015
+ 96.77% done, estimate finish Fri Oct 30 16:19:23 2015
+ 99.08% done, estimate finish Fri Oct 30 16:19:23 2015
+Total translation table size: 77608
+Total rockridge attributes bytes: 34111
+Total directory bytes: 59914
+Path table size(bytes): 112
+Done with: The File(s)                             Block(s)    216770
+Writing:   Ending Padblock                         Start Block 216852
+Done with: Ending Padblock                         Block(s)    150
+Max brk space used 63000
+217002 extents written (423 MB)
+[root@localhost respin-centos]# 
+

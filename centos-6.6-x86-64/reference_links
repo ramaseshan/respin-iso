@@ -1,0 +1,20 @@
+https://wikis.uit.tufts.edu/confluence/display/TUSKpub/Build+Custom+RHEL+or+CentOS+Respin+DVD
+
+http://sourcecodemania.com/how-to-make-custom-centos-iso/
+
+http://linuxkarthik.blogspot.gr/2011/08/how-to-customize-centos-dvd-using.html
+
+http://kfei.logdown.com/posts/143152-build-your-own-customized-install-disc-from-centos-64
+
+https://gist.githubusercontent.com/skiane/ec07442c3b20d591f385/raw/95586ce7beb65e3a4fc653a42185f2b0eb3de1b9/create-centos-6.5-mini-unattended-iso.sh
+
+
+http://serverfault.com/questions/517908/how-to-create-a-custom-iso-image-in-centos
+
+http://stackoverflow.com/questions/23220631/how-to-build-centos-iso-with-custom-packages-like-vlc-eclipse-etc
+
+http://stackoverflow.com/questions/23236910/error-while-installing-respinned-customized-centos
+
+## Understanding Kickstart
+
+https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/5/html/Installation_Guide/s1-kickstart2-options.html
